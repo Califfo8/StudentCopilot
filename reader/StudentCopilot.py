@@ -2,16 +2,9 @@ import whisper
 import docx
 import json
 from pathlib2 import Path
-# from sumy.parsers.plaintext import PlaintextParser
-# from sumy.nlp.tokenizers import Tokenizer
-# from sumy.summarizers.lsa import LsaSummarizer
-# from gensim.summarization import summarize
-# from transformers import BartTokenizer, BartForConditionalGeneration
-# from summarizer import Summarizer
 import os
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
-# import nltk
-# import openai
+
 class StudentCopilot:
     def __init__(self, config_path):
         f = open(config_path + 'config.json')
@@ -21,7 +14,7 @@ class StudentCopilot:
         self.transcriptin_path = data['dest_path']+ "/"
         self.lingua = data['lingua']
     def createWordFile(self, FILE_NAME, text):
-        print("Exporting in microsoft word...")
+        print("Esportando in microsoft word...")
         title = FILE_NAME[0:FILE_NAME.find('.')]
         # Create a document
         doc = docx.Document()
@@ -37,15 +30,7 @@ class StudentCopilot:
         run = p.add_run(text)
         # Save the document
         doc.save(self.transcriptin_path + title + ".docx")
-        print("Operazione conclusa con successo!")
-
-    def summarizeText(self, text):
-        # model = Summarizer()
-
-        # Decode and output the summary
-        # summary = model(text)
-        print("\nSummary:")
-        # print(summary)
+        print("Trascritto file " + FILE_NAME + " con successo!")
 
     def convertSpeechToText_OpenAI(self, file_name, prompt=""):
             FILE_PATH = self.audio_path + file_name
@@ -74,6 +59,8 @@ class StudentCopilot:
                 only_files.append(f)
                 print("\t - " + f)
         risp = input("Vuoi continuare? [y/n]")
+        while risp != 'y' and risp != 'n':
+            risp = input("Vuoi continuare? [y/n]")
         if risp == 'n':
             return
         print("Loading model...")
@@ -105,3 +92,34 @@ class StudentCopilot:
         # Save the document
         doc.save(self.transcriptin_path + "Trascrizioni.docx")
         print("Operazione conclusa con successo!")
+
+    def convertAllToMany(self, prompt=""):
+        elements = os.listdir(self.audio_path)
+        only_files = []
+        print("I seguenti file verranno trascritti:")
+        for f in elements:
+            path = Path(self.audio_path + f)
+            if path.is_file():
+                only_files.append(f)
+                print("\t - " + f)
+        risp = input("Vuoi continuare? [y/n]")
+        while risp != 'y' and risp != 'n':
+            risp = input("Vuoi continuare? [y/n]")
+        if risp == 'n':
+            return
+        print("Loading model...")
+        if self.lingua == 2:
+            model = whisper.load_model("base.en")
+        elif self.lingua == 1:
+            model = whisper.load_model("base")
+        else:
+            print("ERRORE: La lingua impostata non è valida")
+            return
+
+        print("Starting transcription...")
+        doc = docx.Document()
+        for f in only_files:
+            file_path = self.audio_path + f
+            result = model.transcribe(file_path, verbose=False, fp16=False, initial_prompt=prompt)
+            self.createWordFile(f, result['text'])
+        print("Tutti i file sono stati trascritti correttamente!")

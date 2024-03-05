@@ -12,6 +12,11 @@ class simpleUI:
 
     def clearConsole(self):
         os.system("cls")
+
+    def returnToMenu(self):
+        input("Premi un tasto per continuare...")
+        self.clearConsole()
+        self.print_menu()
     def bootstrap(self):
         config_path = Path(CONFING_PATH)
         if config_path.is_file():
@@ -56,7 +61,8 @@ class simpleUI:
         print("-----------------MENU-----------------\n"
               "Scegli cosa vuoi fare premendo il tasto tra le parentesi quadre\n"
               "[1] Converti un file audio in file word\n"
-              "[2] Converti tutti i file presenti nella cartella audio\n"
-              "[3] Esci\n")
+              "[2] Converti tutti i file presenti nella cartella in un unico file word\n"
+              "[3] Converti ogni file presente nella cartella nel suo corrispettivo file word\n"
+              "[4] Esci\n")
 
 
