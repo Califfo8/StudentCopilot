@@ -13,7 +13,15 @@ class StudentCopilot:
         self.audio_path = data['audio_path'] + "/"
         self.transcriptin_path = data['dest_path']+ "/"
         self.lingua = data['lingua']
-    def createWordFile(self, FILE_NAME, text):
+    def get_model(self):
+        if self.lingua == 2:
+            return whisper.load_model("base.en")
+        elif self.lingua == 1:
+            return whisper.load_model("base")
+        else:
+            print("ERRORE: La lingua impostata non è valida")
+            return None
+    def createWordFile(self, FILE_NAME, text, save=True):
         print("Esportando in microsoft word...")
         title = FILE_NAME[0:FILE_NAME.find('.')]
         # Create a document
@@ -36,42 +44,37 @@ class StudentCopilot:
             FILE_PATH = self.audio_path + file_name
 
             print("Loading model...")
-            if self.lingua == 2:
-                model = whisper.load_model("base.en")
-            elif self.lingua == 1:
-                model = whisper.load_model("base")
-            else:
-                print("ERRORE: La lingua impostata non è valida")
-                return
-
+            model = self.get_model()
             print("Starting transcription...")
             result = model.transcribe(FILE_PATH, verbose=True, fp16=False, initial_prompt=prompt)
 
             self.createWordFile(file_name, result['text'])
-
-    def convertAllSpeechToText(self, prompt=""):
+    def get_all_files(self):
         elements = os.listdir(self.audio_path)
         only_files = []
-        print("I seguenti file verranno trascritti:")
         for f in elements:
             path = Path(self.audio_path + f)
             if path.is_file():
                 only_files.append(f)
-                print("\t - " + f)
+        return only_files
+    def askForConfirmation(self, only_files):
+        print("I seguenti file verranno trascritti:")
+        for f in only_files:
+            print("\t - " + f)
         risp = input("Vuoi continuare? [y/n]")
         while risp != 'y' and risp != 'n':
             risp = input("Vuoi continuare? [y/n]")
         if risp == 'n':
-            return
-        print("Loading model...")
-        if self.lingua == 2:
-            model = whisper.load_model("base.en")
-        elif self.lingua == 1:
-            model = whisper.load_model("base")
-        else:
-            print("ERRORE: La lingua impostata non è valida")
+            return False
+        return True
+
+    def convertAllSpeechToText(self, prompt=""):
+        only_files = self.get_all_files()
+        if not self.askForConfirmation(only_files):
             return
 
+        print("Loading model...")
+        model = self.get_model()
         print("Starting transcription...")
         doc = docx.Document()
         for f in only_files:
@@ -94,28 +97,12 @@ class StudentCopilot:
         print("Operazione conclusa con successo!")
 
     def convertAllToMany(self, prompt=""):
-        elements = os.listdir(self.audio_path)
-        only_files = []
-        print("I seguenti file verranno trascritti:")
-        for f in elements:
-            path = Path(self.audio_path + f)
-            if path.is_file():
-                only_files.append(f)
-                print("\t - " + f)
-        risp = input("Vuoi continuare? [y/n]")
-        while risp != 'y' and risp != 'n':
-            risp = input("Vuoi continuare? [y/n]")
-        if risp == 'n':
-            return
-        print("Loading model...")
-        if self.lingua == 2:
-            model = whisper.load_model("base.en")
-        elif self.lingua == 1:
-            model = whisper.load_model("base")
-        else:
-            print("ERRORE: La lingua impostata non è valida")
+        only_files = self.get_all_files()
+        if not self.askForConfirmation(only_files):
             return
 
+        print("Loading model...")
+        model = self.get_model()
         print("Starting transcription...")
         doc = docx.Document()
         for f in only_files:
