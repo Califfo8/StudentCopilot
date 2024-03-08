@@ -36,19 +36,32 @@ class simpleUI:
             "Inserire il percorso completo, assoluto, della cartella dei file audio (selezionare una cartella avente soltanto i file audio "
             "e nessuna sottocartella):\nDEFAULT: './files'\n", "./files")
         dest_path = self.get_input(
-            "Inserire il percorso completo, assoluto, della cartella di destionazione delle trascrizioni (indicare una cartella vuota) "
+            "Inserire il percorso completo, assoluto, della cartella di destinazione delle trascrizioni (indicare una cartella vuota) "
             "\nDEFAULT: './RawTranscript'\n", "./RawTranscript")
 
-        lingua = self.get_input("Scegliere a lingua su cui si effettuano le trascrizioni:\n"
-                                "[1] Italiano\n"
-                                "[2] Inglese\n")
+        lingua = self.get_input("Scegliere la lingua degli audio su cui si effettuano le trascrizioni:\n"
+                                "[1] Multilingua: rilevamento automatico, italiano incluso\n"
+                                "[2] Inglese: specifico per la lingua, più precisa per quest'ultima)\n")
         lingua = int(lingua)
+
+        modello = self.get_input("Scegliere il modello AI da utilizzare per le trascrizioni, più un modello è potente più è preciso e più richiede risorse\n"
+                                 "La tabella è un estratto dalla pagina di OpenAI di Whisper, l'ultima colonna indica quanto velocemente l'AI 'riproduce' l'audio\n."
+                                 "      | Size   | Required VRAM | Relative speed\n"
+                                 "  [1] | tiny   |     ~1 GB     |      ~32x\n"
+                                 "  [2] | base   |     ~1 GB     |      ~16x\n"
+                                 "  [3] | small  |     ~2 GB     |      ~6x\n"
+                                 "  [4] | medium |     ~5 GB     |      ~2x\n"
+                                 "  [5] | large  |     ~10 GB    |      ~1x\n"
+                                 "DEFAULT: base\n")
+        modello = int(modello)
 
         config = {}
         config["booted"] = True
         config["audio_path"] = audio_path
         config["dest_path"] = dest_path
         config["lingua"] = lingua
+        config["modello"] = modello
+
         with open(CONFING_PATH, "w") as outfile:
             json.dump(config, outfile)
 
