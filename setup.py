@@ -4,7 +4,7 @@ setuptools.setup(
     version="1.0.0",
     description="Transcript audio files",
     long_description_content_type="text/markdown",
-    url="https://github.com/realpython/reader",
+    url="https://github.com/Califfo8/StudentCopilot",
     author="Tommaso Califano",
     author_email="info@realpython.com",
     license="MIT",
