@@ -8,29 +8,28 @@ Il programma richiede lo strumento da riga di comando [FFmpeg](https://ffmpeg.or
 
 Di seguito la procedura di installazione dello strumento con anesso l'inserimento del percorso "C:\ffmpeg\bin" nelle proprie variabili di sistema, tale operazione è necessaria al funzionamento di FFmpeg:
 1. **Locazione della cartella**:
-   - Decomprimi la cartella .zip
-   - Rinominala in "ffmpeg"
-   - Spostala nella directory "C:\"
+   - Decomprimere la cartella .zip
+   - Rinominarla in "ffmpeg"
+   - Spostarla nella directory "C:\"
 
 2. **Apri le Impostazioni di Sistema**:
-   - Premi `Windows + R` per aprire il prompt Esegui.
-   - Digita `sysdm.cpl` e premi `Invio`.
+   - Premere `Windows + R` per aprire il prompt Esegui.
+   - Digitare `sysdm.cpl` e premere `Invio`.
 
 3. **Accedi alle Variabili di Ambiente**:
-   - Nella finestra di Proprietà di Sistema, fai clic su "Variabili d'ambiente".
+   - Nella finestra di Proprietà di Sistema, fare clic su "Variabili d'ambiente".
 
 4. **Modifica le Variabili di Sistema**:
-   - Seleziona la variabile di sistema chiamata "Path" e fai clic su "Modifica...".
+   - Selezionare la variabile di sistema chiamata "Path" e fare clic su "Modifica...".
 
 5. **Aggiungi `C:\ffmpeg\bin`**:
-   - Fai clic su "Nuovo" e aggiungi `C:\ffmpeg\bin`.
-   - Assicurati di separarlo dagli altri percorsi con un punto e virgola (`;`).
+   - Fare clic su "Nuovo" e aggiungere `C:\ffmpeg\bin`.
 
 6. **Conferma e Chiudi**:
-   - Clicca su "OK" per chiudere tutte le finestre di dialogo.
+   - Cliccare su "OK" e chiudere tutte le finestre di dialogo.
 
 7. **Verifica**:
-   - Apri un nuovo prompt dei comandi e digita `ffmpeg -version` per verificare l'aggiornamento.
+   - Aprire un nuovo prompt dei comandi e digitare `ffmpeg -version` per verificare l'installazione.
 
 ### Configurazione di StudentCopilot
 
