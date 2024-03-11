@@ -12,23 +12,23 @@ Di seguito la procedura di installazione dello strumento con anesso l'inseriment
    - Rinominarla in "ffmpeg"
    - Spostarla nella directory "C:\"
 
-2. **Apri le Impostazioni di Sistema**:
+2. **Aprire le Impostazioni di Sistema**:
    - Premere `Windows + R` per aprire il prompt Esegui.
    - Digitare `sysdm.cpl` e premere `Invio`.
 
-3. **Accedi alle Variabili di Ambiente**:
+3. **Accedere alle Variabili di Ambiente**:
    - Nella finestra di Proprietà di Sistema, fare clic su "Variabili d'ambiente".
 
-4. **Modifica le Variabili di Sistema**:
+4. **Modificare le Variabili di Sistema**:
    - Selezionare la variabile di sistema chiamata "Path" e fare clic su "Modifica...".
 
-5. **Aggiungi `C:\ffmpeg\bin`**:
+5. **Aggiungere `C:\ffmpeg\bin`**:
    - Fare clic su "Nuovo" e aggiungere `C:\ffmpeg\bin`.
 
-6. **Conferma e Chiudi**:
+6. **Confermare e Chiudere**:
    - Cliccare su "OK" e chiudere tutte le finestre di dialogo.
 
-7. **Verifica**:
+7. **Verificare l'installazione**:
    - Aprire un nuovo prompt dei comandi e digitare `ffmpeg -version` per verificare l'installazione.
 
 ### Configurazione di StudentCopilot
