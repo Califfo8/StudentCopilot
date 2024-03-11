@@ -27,6 +27,18 @@ class simpleUI:
         os.makedirs("./config", exist_ok=True)
         os.makedirs("./files", exist_ok=True)
         os.makedirs("./RawTranscript", exist_ok=True)
+        os.makedirs("./appdata", exist_ok=True)
+
+        # Creazione del file dei rate
+        rates = {}
+        rates["tiny"] = 32
+        rates["base"] = 16
+        rates["small"] = 6
+        rates["medium"] = 2
+        rates["large"] = 1
+
+        with open("./appdata/rates.json", "w") as outfile:
+            json.dump(rates, outfile)
 
         print("-----------------FIRST CONFIGURATION-----------------")
         print("Benvenuto in StudentCopilot! Prima di iniziare, è necessario configurare il programma. Premere "+ str(DEFAULT_KEY) +" per "
