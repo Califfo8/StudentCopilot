@@ -17,7 +17,7 @@ Di seguito la procedura di installazione dello strumento con anesso l'inseriment
    - Digitare `sysdm.cpl` e premere `Invio`.
 
 3. **Accedere alle Variabili di Ambiente**:
-   - Nella finestra di Proprietà di Sistema, fare clic su "Variabili d'ambiente".
+   - Nella finestra di Proprietà di Sistema, sotto la scheda "Avanzate", fare clic su "Variabili d'ambiente".
 
 4. **Modificare le Variabili di Sistema**:
    - Selezionare la variabile di sistema chiamata "Path" e fare clic su "Modifica...".
