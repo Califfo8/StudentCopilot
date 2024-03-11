@@ -24,11 +24,9 @@ Di seguito la procedura di installazione dello strumento con anesso l'inseriment
 
 5. **Aggiungere `C:\ffmpeg\bin`**:
    - Fare clic su "Nuovo" e aggiungere `C:\ffmpeg\bin`.
-
-6. **Confermare e Chiudere**:
    - Cliccare su "OK" e chiudere tutte le finestre di dialogo.
 
-7. **Verificare l'installazione**:
+6. **Verificare l'installazione**:
    - Aprire un nuovo prompt dei comandi e digitare `ffmpeg -version` per verificare l'installazione.
 
 ### Configurazione di StudentCopilot
