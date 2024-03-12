@@ -67,6 +67,8 @@ class StudentCopilot:
         return duration
     def stimate_transcription_time(self, duration):
         rate = self.rates[self.get_model_name()]
+        if rate == -1:
+            return -1, -1, -1
         s_time_sec = int(duration//rate)
         # Converto in ore:minuti:secondi
         s_time_min = s_time_sec // 60
@@ -78,6 +80,7 @@ class StudentCopilot:
     def compute_new_rate(self, audio_duration):
         if self.start_transcription == -1:
             self.start_transcription = time.time()
+            return
         trans_duration = self.start_transcription - time.time()
         if trans_duration == 0:
             print("WARNING: Possibile errore nella stima della velocità di calcolo, l'operazione di stima è stata abortita")
@@ -131,8 +134,11 @@ class StudentCopilot:
         for f in file_array:
             audio_duration += self.get_audio_duration(f)
         s_time_ore, s_time_min, s_time_sec = self.stimate_transcription_time(audio_duration)
-        print(
-            f"Tempo necessario alla trascrizione stimato [modello: {self.get_model_name()}]: {s_time_ore} ore {s_time_min} minuti {s_time_sec} secondi")
+        if s_time_ore == -1:
+            print("Primo utilizzo del modello, la stima verrà calcolata dal secondo utilizzo.")
+        else:
+            print(
+                f"Tempo necessario alla trascrizione stimato [modello: {self.get_model_name()}]: {s_time_ore} ore {s_time_min} minuti {s_time_sec} secondi")
 
         risp = input("Vuoi continuare? [y/n]")
         while risp != 'y' and risp != 'n':

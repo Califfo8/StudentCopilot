@@ -2,7 +2,7 @@ from pathlib2 import Path
 import json
 import os
 DEFAULT_KEY = "0"
-CONFING_PATH = "./config/config.json"
+CONFING_PATH = "./appdata/config/config.json"
 class simpleUI:
     def get_input(self, message, default_value = "-1"):
         valore = input(message)
@@ -24,18 +24,18 @@ class simpleUI:
             return
 
         # creazione delle cartelle necessarie
-        os.makedirs("./config", exist_ok=True)
+        os.makedirs("./appdata", exist_ok=True)
+        os.makedirs("./appdata/config", exist_ok=True)
         os.makedirs("./files", exist_ok=True)
         os.makedirs("./RawTranscript", exist_ok=True)
-        os.makedirs("./appdata", exist_ok=True)
 
         # Creazione del file dei rate
         rates = {}
-        rates["tiny"] = 32
-        rates["base"] = 16
-        rates["small"] = 6
-        rates["medium"] = 2
-        rates["large"] = 1
+        rates["tiny"] = -1  #32
+        rates["base"] = -1  #16
+        rates["small"] = -1  #6
+        rates["medium"] = -1 #2
+        rates["large"] = -1  #1
 
         with open("./appdata/rates.json", "w") as outfile:
             json.dump(rates, outfile)
