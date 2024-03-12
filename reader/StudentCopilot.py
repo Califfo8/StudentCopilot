@@ -24,6 +24,7 @@ class StudentCopilot:
         self.audio_path = self.data['audio_path'] + "/"
         self.transcription_path = self.data['dest_path']+ "/"
         self.lingua = self.data['lingua']
+        self.multi_lang = self.data['multi_language']
         self.model_num = self.data['modello']
         self.prompt = self.data['ask_prompt']
 
@@ -148,7 +149,7 @@ class StudentCopilot:
         return audio_duration
 
     def convert_speech_to_text_openai(self, file_name, prompt=""):
-            FILE_PATH = self.audio_path + file_name
+            file_path = self.audio_path + file_name
             audio_duration = self.ask_for_confermation([file_name])
             if audio_duration == -1:
                 return
@@ -157,7 +158,11 @@ class StudentCopilot:
             print("Loading model...")
             model = self.get_model()
             print("Starting transcription...")
-            result = model.transcribe(FILE_PATH, verbose=True, fp16=False, initial_prompt=prompt)
+            if self.multi_lang != "":
+                result = model.transcribe(file_path, verbose=False, fp16=False, initial_prompt=prompt,
+                                          language=self.multi_lang)
+            else:
+                result = model.transcribe(file_path, verbose=False, fp16=False, initial_prompt=prompt)
 
             self.create_word_file(file_name, result['text'])
             self.compute_new_rate(audio_duration)
@@ -175,7 +180,11 @@ class StudentCopilot:
         doc = docx.Document()
         for f in only_files:
             file_path = self.audio_path + f
-            result = model.transcribe(file_path, verbose=False, fp16=False, initial_prompt=prompt)
+            if self.multi_lang != "":
+                result = model.transcribe(file_path, verbose=False, fp16=False, initial_prompt=prompt,
+                                          language=self.multi_lang)
+            else:
+                result = model.transcribe(file_path, verbose=False, fp16=False, initial_prompt=prompt)
             title = f[0:f.find('.')]
             # Add a paragraph to the document
             p = doc.add_paragraph()
@@ -206,7 +215,10 @@ class StudentCopilot:
         doc = docx.Document()
         for f in only_files:
             file_path = self.audio_path + f
-            result = model.transcribe(file_path, verbose=False, fp16=False, initial_prompt=prompt)
+            if self.multi_lang != "":
+                result = model.transcribe(file_path, verbose=False, fp16=False, initial_prompt=prompt, language= self.multi_lang)
+            else:
+                result = model.transcribe(file_path, verbose=False, fp16=False, initial_prompt=prompt)
             self.create_word_file(f, result['text'])
         self.compute_new_rate(audio_duration)
         print("Operazione conclusa con successo!")
@@ -218,6 +230,10 @@ class StudentCopilot:
             sUI.clear_console()
             if self.lingua == 1:
                 lingua = "Multilingua"
+                if self.multi_lang == "":
+                    multi_lang = "AUTO"
+                else:
+                    multi_lang = self.multi_lang
             else:
                 lingua = "Inglese"
 
@@ -229,7 +245,7 @@ class StudentCopilot:
                   "Scegli l'impostazione da cambiare:\n"
                   "[1] Percorso file audio: " + self.audio_path + "\n"
                   "[2] Percorso file trascrizioni: " + self.transcription_path + "\n"
-                  "[3] Lingua preferita: " + lingua + "\n"
+                  "[3] Lingua preferita: " + lingua + " - " + multi_lang + "\n"
                   "[4] Modello scelto: " + self.get_model_name() + "\n"
                   "[5] Chiedi sempre la frase di contesto: " + ask_prompt + "\n"
                   "[6] Ritorna al menu\n")
@@ -245,7 +261,16 @@ class StudentCopilot:
                                  "[1] Multilingua: rilevamento automatico, italiano incluso. La trascrizione è più lenta\n"
                                  "[2] Inglese: specifico per la lingua, più precisa e veloce per quest'ultima\n ")
                 self.lingua = int(self.lingua)
+                if self.lingua == 2:
+                    self.multi_lang = ""
+                elif self.lingua == 1:
+                    self.multi_lang = input("Hai scelto Multilingua: se l'audio presenta la stessa lingua per tutta la "
+                                          "sua durata è consigliabile specificare la lingua per aumentare la precisione nella trascrizione.\n"
+                                          "Scrivere la lingua voluta in inglese, tutto in minuscolo (es: italian) "
+                                          "opppure premere INVIO per mantenere il rilevamento automatico:\n")
+
                 self.data['lingua'] = int(self.lingua)
+                self.data['multi_language'] = self.multi_lang
             elif scelta == 4:
                 self.model_num = input("Scegliere il modello AI da utilizzare per le trascrizioni, più un modello è potente più è preciso e più richiede risorse\n"
                                  "La tabella è un estratto dalla pagina di OpenAI di Whisper, l'ultima colonna indica quanto velocemente l'AI 'riproduce' l'audio\n."

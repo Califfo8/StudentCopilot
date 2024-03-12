@@ -57,6 +57,15 @@ class simpleUI:
                                 "DEFAULT: Multilingua\n", "1")
         lingua = int(lingua)
 
+        if lingua == 1:
+            lingua_user = self.get_input("Hai scelto Multilingua: se l'audio presenta la stessa lingua per tutta la "
+                                         "sua durata è consigliabile specificare la lingua per aumentare la precisione nella trascrizione.\n"
+                                         "Scrivere la lingua voluta in inglese, tutto in minuscolo (es: italian) "
+                                         "opppure premere INVIO per mantenere il rilevamento automatico:\n"
+                                    "DEFAULT: italian\n", "")
+        else:
+            lingua_user = ""
+
         modello = self.get_input("Scegliere il modello AI da utilizzare per le trascrizioni, più un modello è potente più è preciso e più richiede risorse\n"
                                  "La tabella è un estratto dalla pagina di OpenAI di Whisper, l'ultima colonna indica quanto velocemente l'AI 'riproduce' l'audio\n."
                                  "      | Size   | Required VRAM | Relative speed\n"
@@ -83,6 +92,7 @@ class simpleUI:
         config["audio_path"] = audio_path
         config["dest_path"] = dest_path
         config["lingua"] = lingua
+        config["multi_language"] = lingua_user
         config["modello"] = modello
         config["ask_prompt"] = ask_prompt
 
