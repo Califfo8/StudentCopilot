@@ -37,6 +37,11 @@ class simpleUI:
         rates["medium"] = -1 #2
         rates["large"] = -1  #1
 
+        rates["tiny.en"] = -1  # 32
+        rates["base.en"] = -1  # 16
+        rates["small.en"] = -1  # 6
+        rates["medium.en"] = -1  # 2
+
         with open("./appdata/rates.json", "w") as outfile:
             json.dump(rates, outfile)
 
@@ -111,6 +116,7 @@ class simpleUI:
               "[2] Converti tutti i file presenti nella cartella in un unico file word\n"
               "[3] Converti ogni file presente nella cartella nel suo corrispettivo file word\n"
               "[4] Opzioni\n"
-              "[5] Esci\n")
+              "[5] Offrimi un caffe' <3\n\n"
+              "[6] Esci\n")
 
 

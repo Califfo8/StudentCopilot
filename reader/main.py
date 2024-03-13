@@ -1,5 +1,7 @@
 from reader.StudentCopilot import StudentCopilot
 from reader.simpleUI import simpleUI
+import webbrowser
+
 CONFING_PATH = "./appdata/config/"
 PROMPT_PHRASE = ("Inserire una breve frase in Inglese che descriva il contenuto dell'audio, o degli audio nel loro\n"
                  "insieme, da trascrivere (es: 'Lesson about the application of neural networks in the field of AI'),\n"
@@ -11,7 +13,7 @@ def main():
 
     SC = StudentCopilot(CONFING_PATH)
     command = -1
-    while command != 5:
+    while command != 6:
         command = int(input())
         prompt = ""
         if command == 1:
@@ -32,4 +34,7 @@ def main():
             sUI.return_to_menu()
         elif command == 4:
             SC.options()
+            sUI.return_to_menu()
+        elif command == 5:
+            webbrowser.open('https://www.paypal.me/supportTC')
             sUI.return_to_menu()

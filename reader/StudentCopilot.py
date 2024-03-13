@@ -87,6 +87,8 @@ class StudentCopilot:
             print("WARNING: Possibile errore nella stima della velocità di calcolo, l'operazione di stima è stata abortita")
             return
         model_name = self.get_model_name()
+        if self.model_num != 5 and self.lingua == 2:
+            model_name += ".en"
         new_rate = audio_duration//trans_duration
         old_rate = self.rates[model_name]
         mean_rate = int(self.alfa * new_rate + (1-self.alfa) * old_rate)
