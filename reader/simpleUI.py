@@ -67,7 +67,7 @@ class simpleUI:
                                          "sua durata è consigliabile specificare la lingua per aumentare la precisione nella trascrizione.\n"
                                          "Scrivere la lingua voluta in inglese, tutto in minuscolo (es: italian) "
                                          "opppure premere INVIO per mantenere il rilevamento automatico:\n"
-                                    "DEFAULT: italian\n", "")
+                                    "DEFAULT: AUTO\n", "")
         else:
             lingua_user = ""
 
@@ -111,7 +111,7 @@ class simpleUI:
 
     def print_menu(self):
         print("-------------------------STUDENT COPILOT----------------------------\n"
-              "Scegli cosa vuoi fare premendo il tasto tra le parentesi quadre\n"
+              "Scegli cosa vuoi fare premendo il tasto tra le parentesi quadre:\n"
               "[1] Converti un file audio in file word\n"
               "[2] Converti tutti i file presenti nella cartella in un unico file word\n"
               "[3] Converti ogni file presente nella cartella nel suo corrispettivo file word\n"

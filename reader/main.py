@@ -37,4 +37,5 @@ def main():
             sUI.return_to_menu()
         elif command == 5:
             webbrowser.open('https://www.paypal.me/supportTC')
+            print("Grazie per il supporto!")
             sUI.return_to_menu()

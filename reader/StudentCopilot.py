@@ -1,6 +1,7 @@
 import whisper
 import docx
 import json
+import numpy as np
 from pathlib2 import Path
 from reader.simpleUI import simpleUI
 import ffmpeg
@@ -56,8 +57,15 @@ class StudentCopilot:
         else:
             print("ERRORE: Il modello selezionato non è valido")
             return None
+
     def get_model(self):
         return self.get_type_of_model(self.get_model_name())
+
+    def get_complete_model_name(self):
+        if self.lingua == 2 and self.model_num != 5:
+            return self.get_model_name() + ".en"
+        else:
+            return self.get_model_name()
 
     # Ritorna la durata dell'audio in secondi
     def get_audio_duration(self, audio_name):
@@ -67,7 +75,10 @@ class StudentCopilot:
         duration = float(stream['duration'])
         return duration
     def stimate_transcription_time(self, duration):
-        rate = self.rates[self.get_model_name()]
+        rate = self.rates[self.get_complete_model_name()]
+        if rate == 0:
+            print("WARING: Il rate del modello è 0, sostituzione con il valore di default (1)")
+            rate = 1
         if rate == -1:
             return -1, -1, -1
         s_time_sec = int(duration//rate)
@@ -82,16 +93,18 @@ class StudentCopilot:
         if self.start_transcription == -1:
             self.start_transcription = time.time()
             return
-        trans_duration = self.start_transcription - time.time()
+        trans_duration = time.time() - self.start_transcription
         if trans_duration == 0:
             print("WARNING: Possibile errore nella stima della velocità di calcolo, l'operazione di stima è stata abortita")
             return
-        model_name = self.get_model_name()
-        if self.model_num != 5 and self.lingua == 2:
-            model_name += ".en"
+        model_name = self.get_complete_model_name()
         new_rate = audio_duration//trans_duration
+        # Calcolo del nuovo rate
         old_rate = self.rates[model_name]
-        mean_rate = int(self.alfa * new_rate + (1-self.alfa) * old_rate)
+        mean_rate = int(np.ceil(self.alfa * new_rate + (1-self.alfa) * old_rate))
+        # Prima inizializzazione del rate
+        if self.rates[model_name] == -1:
+            mean_rate = int(new_rate)
 
         #Aggiorno il rate
         self.rates[model_name] = mean_rate
@@ -137,11 +150,11 @@ class StudentCopilot:
         for f in file_array:
             audio_duration += self.get_audio_duration(f)
         s_time_ore, s_time_min, s_time_sec = self.stimate_transcription_time(audio_duration)
-        if s_time_ore == -1:
+        if s_time_ore == -1 and s_time_min == -1 and s_time_sec == -1:
             print("Primo utilizzo del modello, la stima verrà calcolata dal secondo utilizzo.")
         else:
             print(
-                f"Tempo necessario alla trascrizione stimato [modello: {self.get_model_name()}]: {s_time_ore} ore {s_time_min} minuti {s_time_sec} secondi")
+                f"Tempo necessario alla trascrizione stimato [modello: {self.get_complete_model_name()}]: {s_time_ore} ore {s_time_min} minuti {s_time_sec} secondi")
 
         risp = input("Vuoi continuare? [y/n]")
         while risp != 'y' and risp != 'n':
@@ -238,6 +251,7 @@ class StudentCopilot:
                     multi_lang = self.multi_lang
             else:
                 lingua = "Inglese"
+                multi_lang = ""
 
             if self.prompt:
                 ask_prompt = "SI"
