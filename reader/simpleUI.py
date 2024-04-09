@@ -1,9 +1,13 @@
 from pathlib2 import Path
 import json
 import os
+import torch
 DEFAULT_KEY = "0"
 CONFING_PATH = "./appdata/config/config.json"
 class simpleUI:
+    def __init__(self):
+        self.device = "GPU" if torch.cuda.is_available() else "CPU"
+
     def get_input(self, message, default_value = "-1"):
         valore = input(message)
         if valore == DEFAULT_KEY and default_value != "-1":
@@ -90,8 +94,10 @@ class simpleUI:
             ask_prompt = True
         else:
             ask_prompt = False
-
-
+        if torch.cuda.is_available():
+            print("\nATTENZIONE: Rilevata compatibilità con la GPU (scheda video)\n StudentCopilot utilizzera' anche "
+                  "la GPU per velocizzare le trascrizioni, se si sta utilizzando un computer portatile, si consiglia "
+                  "di collegarlo alla corrente elettrica.\n")
         config = {}
         config["booted"] = True
         config["audio_path"] = audio_path
@@ -110,8 +116,8 @@ class simpleUI:
         self.print_menu()
 
     def print_menu(self):
-        print("-------------------------STUDENT COPILOT----------------------------\n"
-              "Scegli cosa vuoi fare premendo il tasto tra le parentesi quadre:\n"
+        print("---------------------------------------STUDENT COPILOT------------------------------------------\n"
+              "Scegli cosa vuoi fare premendo il tasto tra le parentesi quadre: \t\t DEVICE: " + str(self.device) + "\n"
               "[1] Converti un file audio in file word\n"
               "[2] Converti tutti i file presenti nella cartella in un unico file word\n"
               "[3] Converti ogni file presente nella cartella nel suo corrispettivo file word\n"

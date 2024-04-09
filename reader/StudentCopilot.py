@@ -114,7 +114,7 @@ class StudentCopilot:
 
     def create_word_file(self, file_name, text, save=True):
         print("Esportando in microsoft word...")
-        title = file_name[0:file_name.find('.')]
+        title = file_name[0:file_name.rfind('.')]
         # Create a document
         doc = docx.Document()
         # Add a paragraph to the document
