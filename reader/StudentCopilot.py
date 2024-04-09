@@ -77,7 +77,7 @@ class StudentCopilot:
     def stimate_transcription_time(self, duration):
         rate = self.rates[self.get_complete_model_name()]
         if rate == 0:
-            print("WARING: Il rate del modello è 0, sostituzione con il valore di default (1)")
+            print("WARNING: Il rate del modello è 0, sostituzione con il valore di default (1)")
             rate = 1
         if rate == -1:
             return -1, -1, -1
